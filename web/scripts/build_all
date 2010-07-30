@@ -1,0 +1,3 @@
+export PATH="$PATH:/usr/local/bin"
+echo $PATH
+cd $HOME/django_scripts && python2.5 song/update_top_scores.py && python2.5 build/make_tables.py regen && python2.5 build/make_leaderboards.py

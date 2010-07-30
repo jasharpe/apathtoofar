@@ -1,0 +1,70 @@
+{% extends "login_forms.html" %}
+
+{% block title %} | Register{% endblock %}
+
+{% block style %}{{ block.super }}
+<link rel="stylesheet" href="/static/registration.css" />
+{% endblock %}
+
+{% block action %}/register/{% endblock %}
+
+{% block login_form %}
+<tr>
+  <td>{{ form.username.label_tag }}:</td>
+  <td>{{ form.username }}</td> 
+  <td class="error_col">
+    {% if form.username.errors %}
+      {% for error in form.username.errors %}
+        {{ error }}
+      {% endfor %}
+    {% endif %}
+  </td>
+</tr>
+<tr>
+  <td>{{ form.email.label_tag }}:</td>
+  <td>{{ form.email }}</td> 
+  <td class="error_col">
+    {% if form.email.errors %}
+      {% for error in form.email.errors %}
+        {{ error }}
+      {% endfor %}
+    {% endif %}
+  </td>
+</tr>
+<tr>
+  <td><a href="http://www.scorehero.com" target="_blank">ScoreHero</a> username:</td>
+  <td>{{ form.scorehero }}</td> 
+  <td class="error_col">
+    {% if form.scorehero.errors %}
+      {% for error in form.scorehero.errors %}
+        {{ error }}
+      {% endfor %}
+    {% endif %}
+  </td>
+</tr>
+<tr>
+  <td>{{ form.password1.label_tag }}:</td>
+  <td>{{ form.password1 }}</td> 
+  <td class="error_col">
+    {% if form.password1.errors %}
+      {% for error in form.password1.errors %}
+        {{ error }}
+      {% endfor %}
+    {% endif %}
+  </td>
+</tr>
+<tr>
+  <td>{{ form.password2.label_tag }}:</td>
+  <td>{{ form.password2 }}</td> 
+  <td class="error_col">
+    {% if form.password2.errors %}
+      {% for error in form.password2.errors %}
+        {{ error }}
+      {% endfor %}
+    {% endif %}
+  </td>
+</tr>
+<tr><td rowspan="3"><input type="submit" value="Register" /></td></tr>
+{% endblock %}
+
+{% block login_alt_message %}<span class="right">Already registered? <a class="no_visited" href="/login/">Sign in</a></span>{% endblock %}

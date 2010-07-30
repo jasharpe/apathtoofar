@@ -1,0 +1,30 @@
+{% for leaderboard_column in leaderboard_columns %}
+<div class="leaderboard_column" style="float: left;">
+  {% for leaderboard in leaderboard_column %}
+  <div class="rounded leaderboard table_div">
+    <h6>{{ leaderboard.title }}</h6>
+    <table>
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>{{ type_str }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in leaderboard.leaderboard %}
+        <tr class="{% cycle 'odd' '' %}">
+          {% ifequal row.user__count 'N/A' %}
+          <td class="not_nb">{{ row.user }}</td>
+          <td class="not_nb">{{ row.user__count }}</td>
+          {% else %}
+          <td>{{ row.user }}</td>
+          <td>{{ row.user__count }}</td>
+          {% endifequal %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endfor %}
+</div>
+{% endfor %}

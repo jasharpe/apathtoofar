@@ -1,0 +1,37 @@
+{% extends "protochrome.html" %}
+
+{% block chrome_style %} 
+<link rel="stylesheet" href="/static/chrome.css" />
+{% endblock %}
+{% block chrome_js %}
+{{ block.super }}
+<script type="text/javascript" src="/static/chrome.js"></script>
+{% endblock %}
+
+{% block header %}
+<div id="header">
+  <a href="/"><img src="/static/apathtoofar2.png" alt="A Path Too Far" /></a>
+</div>
+{% endblock %}
+
+{% block page_content %}
+<div id="column_container">
+  <div id="content">
+    {% block content %}{% endblock %}
+  </div>
+  {% block ads %}
+  <div id="sidebar" class="rounded">
+    <script type="text/javascript"><!--
+      google_ad_client = "pub-2391496503298844";
+      /* 160x600, created 11/27/09 */
+      google_ad_slot = "3833860605";
+      google_ad_width = 160;
+      google_ad_height = 600;
+      //--></script>
+    <script type="text/javascript"
+      src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+  </div>
+  {% endblock %}
+  <div style="clear:both;"></div>
+</div>
+{% endblock %}

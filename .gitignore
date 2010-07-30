@@ -1,0 +1,12 @@
+*~
+*.swp
+AAPIUser.pm
+optimizer/mid/*
+*.class
+optimizer/tmp/*
+auth
+auth.py
+*.pyc
+*.pem
+private.py
+settings.py

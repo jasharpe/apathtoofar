@@ -1,0 +1,9 @@
+wget http://s3.amazonaws.com/ServEdge_pub/s3sync/s3sync.tar.gz
+tar -xzvf s3sync.tar.gz
+cd odopt
+perl path_mids.pl --folder ../mid_folder --outputfolder ../output_folder --list ../mid_list --zipfolder ../zips
+cd ..
+source ./auth
+./s3sync/s3cmd.rb createbucket aptf_results
+./s3sync/s3sync.rb -r ./zips aptf_results:/zips`date +%s` x-amz-acl:public-read
+shutdown -h now

@@ -1,0 +1,104 @@
+{% extends "protochrome.html" %}
+
+{% block chrome_style %} 
+<link rel="stylesheet" href="/static/pathchrome.css" />
+{% endblock %}
+
+{% block header %}
+<div id="header">
+  <div id="path_nav" class="left">
+    <ul id="settings_select" class="menu">
+      <li>
+      {% for diff in diffs %}
+      {% ifequal path.diff diff %}
+      <span class="selected">{{ diff.full_name }}</span>
+      {% else %}
+      <a href="/path/xbox360/{{ diff.short_name }}/{{ path.inst.short_name }}/{{ path.settings.short_name }}/{{ path.song.mid_name }}/{{ type }}/">{{ diff.full_name }}</a>
+      {% endifequal %}
+      {% if not forloop.last %}
+      -
+      {% endif %}
+      {% endfor %}
+      </li>
+      
+      <li>
+      {% for inst in insts %}
+      {% ifequal path.inst inst %}
+      <span class="selected">{{ inst.full_name }}</span>
+      {% else %}
+      <a href="/path/xbox360/{{ path.diff.short_name }}/{{ inst.short_name }}/{{ path.settings.short_name }}/{{ path.song.mid_name }}/{{ type }}/">{{ inst.full_name }}</a>
+      {% endifequal %}
+      {% if not forloop.last %}
+      -
+      {% endif %}
+      {% endfor %}
+      </li>
+
+      <li>
+      {% for setting in settings %}
+      {% ifequal path.settings setting %}
+      <span class="selected">{{ setting.name }}</span>
+      {% else %}
+      <a href="/path/xbox360/{{ path.diff.short_name }}/{{ path.inst.short_name }}/{{ setting.short_name }}/{{ path.song.mid_name }}/{{ type }}/">{{ setting.name }}</a>
+      {% endifequal %}
+      {% if not forloop.last %}
+      -
+      {% endif %}
+      {% endfor %}
+      </li>
+
+      <li>
+      {% for path_type in path_types %}
+      {% ifequal type path_type.short_name %}
+      <span class="selected">{{ path_type.full_name }}</span>
+      {% else %}
+      <a href="/path/xbox360/{{ path.diff.short_name }}/{{ path.inst.short_name }}/{{ path.settings.short_name }}/{{ path.song.mid_name }}/{{ path_type.short_name }}/">{{ path_type.full_name }}</a>
+      {% endifequal %}
+      {% if not forloop.last %}
+      -
+      {% endif %}
+      {% endfor %}
+      </li>
+      <div style="clear:both;"></div>
+    </ul>
+    <ul id="return_links" class="menu">
+      <li><a class="left" href="/paths">Return to song selection</a></li>
+      <div style="clear:both;"></div>
+    </ul>
+  </div>
+  <a href="/"><img id="aptf_logo" src="/static/apathtoofar_small.png" alt="A Path Too Far" height="40px" width="122px"></a>
+  <div style="clear:both;"></div>
+</div>
+{% endblock %}
+
+{% block page_content %}
+<div id="path_content">
+  <div id="top_score" class="rounded_bottom">
+    {% if top_score %}
+    <h5>Current top score:</h5>
+    {{ top_score.score }}
+    {% ifequal top_score_over 0 %}
+    {% if optimal %}
+    (<span class="over bold">{{ top_score_differential }} over</span> this path and <span class="optimal bold">optimal</span>),
+    {% else %}
+    (<span class="over bold">{{ top_score_differential }} over</span> this path),
+    {% endif %}
+    {% else %}
+    {% ifequal top_score_over 1 %}
+    {% if optimal %}
+    (<span class="over bold">exactly matching</span> this path and <span class="optimal bold">optimal</span>)
+    {% else %}
+    (<span class="over bold">exactly matching</span> this path),
+    {% endif %}
+    {% else %}
+    (<span class="under bold">{{ top_score_differential }} under</span> this path),
+    {% endifequal %}
+    {% endifequal %}
+    achieved by {{ top_score.user }} on {{ top_score_date_str }} on {{ top_score.platform.full_name }}
+    {% else %}
+    No top score yet!
+    {% endif %}
+  </div>
+  {% block content %}{% endblock %}
+</div>
+{% endblock %}

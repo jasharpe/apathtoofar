@@ -1,0 +1,31 @@
+{% extends "chrome.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="/static/stats.css" />
+<style type="text/css">
+  #stats_link {
+    background-color:#AFA7CA;
+  }
+</style>
+{% endblock %}
+
+{% block title %} | Stats{% endblock %}
+
+{% block content %}
+<div class="nav rounded table_div">
+  {% ifequal type 'firsts' %}
+  <span class="selected">Firsts</span>
+  {% else %}
+  <a href="/stats/firsts/">Firsts</a>
+  {% endifequal %}
+  -
+  {% ifequal type 'optimals' %}
+  <span class="selected">Optimals</span>
+  {% else %}
+  <a href="/stats/optimals/">Optimals</a>
+  {% endifequal %}
+</div>
+<div id="leaderboard_columns">
+  {% include stats_template %}
+</div>
+{% endblock %}

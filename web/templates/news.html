@@ -1,0 +1,55 @@
+{% extends "chrome.html" %}
+
+{% comment %}
+{% block redirect_to %}/news/{% endblock %}
+{% endcomment %}
+
+{% block style %}
+<link rel="stylesheet" href="/static/content.css" />
+<style type="text/css">
+  #news_link {
+    background-color:#AFA7CA;
+  }
+</style>
+{% endblock %}
+
+{% block title %} | News{% if post %} | {{ post.title }}{% endif %}{% endblock %}
+
+{% block content %}
+<!-- Should have a recent activity ticker up here -->
+<div class="paginator_main">
+  {% for post in page.object_list %}
+  <div class="content_post content_container rounded">
+    <div class="content_header">
+      <h4><a class="no_underline content_header_link" href="/news/{{ post.id }}/{{ post.title|slugify }}/">{{ post.title }}</a></h4>
+      <!-- <div class="content_byline"></div> -->
+    </div> <!-- content_header -->
+    <div class="content_body">{{ post.body|safe|linebreaksbr }}</div>
+    <div class="content_footer">
+      <span class="userfullname">
+        {% comment %}
+        <a class="byline_user_link hover_underline" href="/users/{{ post.author.username }}">
+          {{ post.author.get_full_name }}
+        </a>
+        {% endcomment %}
+        {{ post.author.get_full_name }}
+      </span> on {{ post.pub_date|date:"F j, Y" }}
+      {% comment %}
+      <a class="no_visited hover_underline comment_link" href="#">{{ post.comments.count }} comments</a>
+      {% endcomment %}
+    </div> <!-- content_footer -->
+  </div> <!-- content_post / content_container -->
+  {% endfor %}
+</div> <!-- paginator_main -->
+{% if page.has_other_pages %}
+<div class="paginator_footer rounded">
+  {% if page.has_previous %}
+  <div class="left dark_bg_link"><a href="/news/{{ page.previous_page_number }}">&lt;&lt; Newer</a></div>
+  {% endif %}
+  {% if page.has_next %}
+  <div class="right dark_bg_link"><a href="/news/{{ page.next_page_number }}">Older &gt;&gt;</a></div>
+  {% endif %}
+  <div style="clear:both;"></div>
+</div> <!-- paginator_footer -->
+{% endif %}
+{% endblock %}

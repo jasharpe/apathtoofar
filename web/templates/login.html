@@ -1,0 +1,35 @@
+{% extends "login_forms.html" %}
+
+{% block title %} | Login{% endblock %}
+
+{% block menu_login %}{% endblock %}
+
+{% block action %}/login/{% endblock %}
+
+{% block login_form %}
+<tr>
+  <td>{{ form.username.label_tag }}:</td>
+  <td>{{ form.username }}</td> 
+  <td class="error_col">
+    {% if form.username.errors %}
+      {% for error in form.username.errors %}
+        {{ error }}
+      {% endfor %}
+    {% endif %}
+  </td>
+</tr>
+<tr>
+  <td>{{ form.password.label_tag }}:</td>
+  <td>{{ form.password }}</td> 
+  <td class="error_col">
+    {% if form.password.errors %}
+      {% for error in form.password.errors %}
+        {{ error }}
+      {% endfor %}
+    {% endif %}
+  </td>
+</tr>
+<tr><td rowspan="3"><input type="submit" value="Sign in" /></td></tr>
+{% endblock %}
+
+{% block login_alt_message %}<span class="right">Not signed up? <a class="no_visited" href="/register/">Register</a></span>{% endblock %}

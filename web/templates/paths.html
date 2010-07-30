@@ -1,0 +1,128 @@
+{% extends "chrome.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="/static/paths.css" />
+<style type="text/css">
+  #paths_link {
+    background-color:#AFA7CA;
+  }
+</style>
+{% endblock %}
+
+{% block js %}
+{{ block.super }}
+<script type="text/javascript" src="/static/jquery.tablesorter.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    // add new widget called repeatHeaders
+    $.tablesorter.addWidget({
+      // give the widget a id
+      id: "repeatHeaders",
+      // format is called when the on init and when a sorting has finished
+      format: function(table) {
+        // cache and collect all TH headers
+        if(!this.headers) {
+          var h = this.headers = []; 
+          $("thead th",table).each(function() {
+            h.push(
+              "<th class=\""+$(this).attr("class")+"\">" + $(this).html() + "</th>"
+            );
+            
+          });
+        }
+
+        // remove appended headers by classname.
+        $("tr.repeated-header",table).remove();
+        
+        // loop all tr elements and insert a copy of the "headers"	
+        for(var i=0; i < table.tBodies[0].rows.length; i++) {
+          // insert a copy of the table head every 10th row
+          if((i%30) == 29) {
+            $("tbody tr:eq(" + i + ")",table).before(
+              $("<tr></tr>").addClass("repeated-header").html(this.headers.join(""))
+            );
+          }
+        }
+        
+      }
+    });
+
+    /*$("#songTable").tablesorter({
+      sortList: [[0,0]],
+      widgets: ['repeatHeaders'],
+      headers:  {
+        9: {
+          sorter:'text'
+        }
+      }
+    });*/
+
+    $("#song_table").tablesorter({widgets: ["zebra", "repeatHeaders"],
+                                  textExtraction: function(node) {
+                                    if (node.className == 'not_nb') {
+                                      return '';
+                                    }
+                                    if (node.childNodes[0].tagName == 'A') {
+                                      return node.childNodes[0].innerHTML;
+                                    }
+                                    return node.innerHTML;
+                                  }});
+    $("#release_sort").click(function () {
+      $("#release_header").click();
+    });
+  });
+</script>
+{% endblock %}
+
+{% block title %} | Paths | {{ sel_game.short_long_name }}{% endblock %}
+
+{% block content %}
+<!-- Nav -->
+<div id="path_nav" class="nav rounded table_div">
+  <h5 class="not_nb">Path settings</h5>
+  <ul class="link_list">
+    <li>&gt; 
+    {% for game in games %}
+    {% ifequal sel_game game %}
+    <span class="selected">{{ game.short_long_name }}</span>
+    {% else %}
+    <a href="/paths/{{ game.short_name }}/{{ sel_diff.short_name }}/{{ sel_inst.short_name }}/">{{ game.short_long_name }}</a>
+    {% endifequal %}
+    {% if not forloop.last %}
+    -
+    {% endif %}
+    {% endfor %}
+    </li>
+
+    <li>&gt; 
+    {% for diff in diffs %}
+    {% ifequal sel_diff diff %}
+    <span class="selected">{{ diff.full_name }}</span>
+    {% else %}
+    <a href="/paths/{{ sel_game.short_name }}/{{ diff.short_name }}/{{ sel_inst.short_name }}/">{{ diff.full_name }}</a>
+    {% endifequal %}
+    {% if not forloop.last %}
+    -
+    {% endif %}
+    {% endfor %}
+    </li>
+
+    <li>&gt; 
+    {% for inst in insts %}
+    {% ifequal sel_inst inst %}
+    <span class="selected">{{ inst.full_name }}</span>
+    {% else %}
+    <a href="/paths/{{ sel_game.short_name }}/{{ sel_diff.short_name }}/{{ inst.short_name }}/">{{ inst.full_name }}</a>
+    {% endifequal %}
+    {% if not forloop.last %}
+    -
+    {% endif %}
+    {% endfor %}
+    </li>
+  </ul>
+</div>
+
+{% include table_template %}
+{% endblock %}
+
+{% block ads %}{% endblock %}

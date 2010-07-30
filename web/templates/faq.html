@@ -1,0 +1,35 @@
+{% extends "chrome.html" %}
+
+{% comment %}
+{% block redirect_to %}/faq/{% endblock %}
+{% endcomment %}
+
+{% block style %}
+<link rel="stylesheet" href="/static/content.css" />
+<style type="text/css">
+  #faq_link {
+    background-color:#AFA7CA;
+  }
+</style>
+{% endblock %}
+
+{% block title %} | Frequently Asked Questions{% endblock %}
+
+{% block content %}
+<div class="content_container rounded">
+  <h5 class="not_nb">On this page</h5>
+  <ul class="link_list">
+    {% for faq in faqs %}
+    <li>&gt; <a href="#{{faq.title|slugify }}">{{ faq.title }}</a></li>
+    {% endfor %}
+  </ul> <!-- link_list -->
+</div> <!-- content_container -->
+{% for faq in faqs %}
+<div id="{{ faq.title|slugify }}" class="content_post content_container rounded">
+  <div class="content_header">
+    <h4>{{ faq.title }}</h4>
+  </div> <!-- content_header -->
+  <div class="content_body">{{ faq.body|safe|linebreaksbr }}</div>
+</div> <!-- content_post / content_container -->
+{% endfor %}
+{% endblock %}

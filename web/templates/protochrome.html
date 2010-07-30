@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <link rel="stylesheet" href="/static/reset.css" />
+    <link rel="stylesheet" href="/static/protochrome.css" />
+    <link rel="stylesheet" href="/static/jquery-autocomplete/jquery.autocomplete.css" />
+    {% block chrome_style %}{% endblock %}
+    {% block style %}{% endblock %}
+    <script type="text/javascript" src="/static/jquery.js"></script>
+    <script type="text/javascript" src="/static/jquery-autocomplete/jquery.autocomplete.min.js"></script>
+    {% block chrome_js %}
+    <script type="text/javascript">
+      $(document).ready(function() {
+          var data = [{% for song in all_songs %}{ text:"{{ song.full_name|safe|escapejs }}", url:'/path/{{song.mid_name|safe|escapejs}}' }{% ifnotequal song last_all_song %},{% endifnotequal %}{% endfor %}];
+          $("#song_search").autocomplete(data, {
+            matchContains : true,
+            formatItem: function(item) {
+              return item.text;
+            }
+            }).result(function(event, item) {
+              location.href = item.url;
+            });
+      });
+    </script>
+    {% endblock %}
+    {% block js %}{% endblock %}
+    <title>A Path Too Far{% block title %}{% endblock %}</title>  
+  </head>
+  <body>
+    <div id="container">
+      {% block header %}{% endblock %}
+      <ul id="menu">
+        <li><a id="news_link" href="/news/">News</a></li>
+        <li><a id="faq_link" href="/faq/">FAQ</a></li>
+        <li><a id="paths_link" href="/paths/">Paths</a></li>
+        <li><a id="stats_link" href="/stats/">Stats</a></li>
+        {% comment %}
+        <li><a id="donate_link" href="/donate/">Donate</a></li>
+        {% endcomment %}
+        {% comment %}
+        {% if user.is_authenticated %}
+        <li class="right">
+        <a id="logout_link" href="/logout/r/?next={% block redirect_to %}/news/{% endblock %}">Logout</a>
+        </li>
+        <li class="right">
+        <a id="user_link" href="/user/{{ user.username }}">
+          {{ user.username }}
+        </a>
+        </li>
+        {% else %}
+        {% block menu_login %}
+        <li class="right">
+        <div class="relative">
+          <a id="login_link" href="#">Sign in</a>
+          <div id="login_box">
+            <form method="POST" action="/login/">
+              <dl>
+                <dt><label for="id_username">Username</label>:</dt>
+                <dd><input id="id_username" type="text" name="username" maxlength="30" /></dd>
+                <dt><label for="id_password">Password</label>:</dt>
+                <dd><input type="password" name="password" id="id_password" /></dd>
+              </dl>
+              <input type="hidden" name="next" value="/news/" />
+              <input type="submit" class="right" value="Sign in" />
+
+            </form>
+          </div>
+        </div>
+        </li>
+        {% endblock %}
+        {% block menu_register %}
+        <li class="right"><a id="register_link" href="/register/">Register</a></li>
+        {% endblock %}
+        {% endif %}
+        {% endcomment %}
+        <li class="right">
+          <label for="song_search">Search:</label>
+          <input id="song_search" />
+        </li>
+        <div style="clear:both;"></div>
+      </ul>
+      {% block page_content %}{% endblock %}
+      <div id="footer">
+        <ul>
+          <li id="copyright">Jeremy Sharpe &copy; 2010</li>
+          <li id="django_link" class="right"><a href="http://www.djangoproject.com/"><img src="http://media.djangoproject.com/img/badges/djangosite80x15_grey.gif" border="0" alt="A Django site." title="A Django site." /></a></li>
+          <div style="clear:both;"></div>
+        </ul>
+      </div>
+    </div>
+    <!-- Google analytics -->
+    <script type="text/javascript">
+      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+      document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+      try {
+        var pageTracker = _gat._getTracker("UA-9272185-1");
+        pageTracker._trackPageview();
+      } catch(err) {}
+    </script>
+    <!-- end Google analytics -->
+  </body>
+</html>

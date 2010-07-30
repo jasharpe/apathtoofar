@@ -1,0 +1,7 @@
+{% extends "pathchrome.html" %}
+
+{% block title %} | {{ path.song.full_name }}{% endblock %}
+
+{% block content %}
+<img id="path_img" src="/static/{{ path.img }}"></img>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends "pathchrome.html" %}
+
+{% block title %} | Text Path | {{ path.song.full_name }}{% endblock %}
+
+{% block style %}<link rel="stylesheet" href="/static/content.css" />{% endblock %}
+
+{% block content %}
+<div id="path_txt" class="content_container">{{ text|linebreaks }}</div>
+{% endblock %}

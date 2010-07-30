@@ -1,0 +1,24 @@
+{% extends "chrome.html" %}
+
+{% block style %}<link rel="stylesheet" href="/static/login.css" />{% endblock %}
+
+{% block content %}
+{% if form.non_field_errors %}
+<div id="login_errors">
+  {% for error in form.non_field_errors %}
+    <div class="login_error">{{ error }}</div>
+  {% endfor %}
+</div>
+{% endif %}
+<div class="center">
+  <div id="login_page_box" class="minwidth">
+    <form method="POST" action="{% block action %}{% endblock %}">
+      <table><tbody>
+        {% block login_form %}{% endblock %}
+      </tbody></table>
+      <input type="hidden" name="next" value="/news/" />
+    </form>
+    {% block login_alt_message %}{% endblock %}
+  </div>
+</div>
+{% endblock %}

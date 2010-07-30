@@ -1,0 +1,41 @@
+<!-- Song list -->
+<div id="song_list" class="rounded table_div">
+  {% if not diff_releases %}
+  <a id="release_sort" class="right" href="javascript:void()">Sort by Release Date</a>
+  {% endif %}
+  <table id="song_table">
+    <thead>
+      <tr>
+        <th class="wide">Song</th>
+        {% for setting in settings %}
+        <th>{{ setting.name }}</th>
+        {% endfor %}
+        <th>SH #1 Score</th>
+        <th>SH #1 User</th>
+        <th>Platform</th>
+        <th id="release_header" class="hidden">Release</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in rows %}
+      <tr>
+        <td class="wide">{{ row.song.full_name }}</td>
+        {% for path in row.paths %}
+        <td class="{% if path.greater %}plus{% else %}{% if path.less %}minus{% else %}even{% endif %}{% endif %}"><a href="{% url path song_str=row.song.mid_name,diff_str=diff.short_name,inst_str=inst.short_name,settings_str=path.path.settings.short_name,plat_str=plat.short_name %}">{{ path.path.score }}</a></td>
+        {% empty %}
+        <td>--</td><td>--</td><td>--</td><td>--</td><td>--</td><td>--</td>
+        {% endfor %}
+        <td class="{% if row.use_top_score.neg %}minus{% else %}plus{% endif %}">{{ row.use_top_score.top_score }}</td>
+        {% if row.top_score %}
+        <td>{{ row.top_score.user }}</td>
+        <td class="{{ row.top_score.platform.short_name }}">{{ row.top_score.platform.full_name }}</td>
+        {% else %}
+        <td class="not_nb">None</td>
+        <td class="not_nb">N/A</td>
+        {% endif %}
+        <td class="hidden">{{ row.release }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
