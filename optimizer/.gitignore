@@ -1,0 +1,6 @@
+*~
+*.swp
+AAPIUser.pm
+mid/*
+*.class
+tmp/*

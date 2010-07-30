@@ -1,0 +1,13 @@
+package AAPIUser;
+
+# Returns username for ajanata's API
+sub get_user() {
+  return "********";
+}
+
+# Returns API key for ajanata's API
+sub get_key() {
+  return "********";
+}
+
+1;
